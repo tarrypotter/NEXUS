@@ -303,6 +303,32 @@ openProjectDetails=function(id,tab='overview'){
 };
 const nx26Render=render;render=function(){nx26Render();let brand=document.querySelector('.brand-copy strong');if(brand)brand.textContent='2.6';let settings=document.getElementById('main');if(page==='settings'&&settings&&!settings.querySelector('.nx26-release')){let div=document.createElement('section');div.className='nx26-release nx26-card';div.innerHTML='<h3>업데이트 내역</h3><p class="muted" style="font-size:12px">NEXUS 2.0부터 현재 2.6까지의 변경 사항을 확인할 수 있습니다.</p><button class="btn-soft" onclick="nx26History()">버전별 업데이트 내역 보기 →</button>';settings.appendChild(div)}};
 
+
+/* v2.6.1 — keep Overview focused on live project status; all beginner setup belongs in Help. */
+const nx261PreviousRender=render;
+render=function(){
+ nx261PreviousRender();
+ const main=document.getElementById('main');
+ if(!main)return;
+ if(page==='dashboard'){
+  main.querySelectorAll('.nx24-start, .nx-help-card').forEach(el=>el.remove());
+ }
+ if(page==='help'){
+  // The same interactive 4-step guide and practice actions now live in the manual.
+  if(!main.querySelector('[data-nx261-guide]')){
+   const holder=document.createElement('div');
+   holder.setAttribute('data-nx261-guide','');
+   holder.innerHTML=nx24StartPanel();
+   const start=holder.firstElementChild;
+   if(start){
+    start.querySelector('.nx24-title').textContent='처음 시작하기 · 4단계';
+    const anchor=main.querySelector('.nx24-start');
+    if(anchor)anchor.before(holder);else main.prepend(holder);
+   }
+  }
+ }
+};
+
 load();render();
 
 </script></body></html>
