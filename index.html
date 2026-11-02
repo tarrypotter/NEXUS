@@ -18,7 +18,20 @@
 .timeline-stage .stage-meter{height:7px;border-radius:20px;background:var(--line);margin-top:9px;overflow:hidden}.timeline-stage .stage-meter>div{height:100%;background:var(--primary)}
 .timeline-overview{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 18px}.timeline-overview span{padding:7px 10px;border-radius:9px;background:var(--tint);font-size:12px}
 @media(max-width:650px){.calendar-task.is-milestone{border-left-width:2px}.timeline-stage{padding-left:19px}}
-</style><style>.ops-panel .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.ops-panel .metric{padding:13px;box-shadow:none}.ops-panel .metric strong{overflow-wrap:anywhere}.ops-warning{border:1px solid var(--line);background:var(--tint);padding:10px 12px;border-radius:10px;font-size:13px}.ops-panel select.field{padding:9px}@media(max-width:500px){.ops-panel .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.ops-panel .metric strong{font-size:17px}}</style></head><body><div class="shell"><aside class="side"><div class="brand"><i></i>NEXUS</div><nav class="nav" id="nav"></nav><div class="sidefoot">담당자 전용 · 내 브라우저에 저장<br>관리자 화면은 하나로 간단하게.</div></aside><main class="main"><div class="top"><div><div class="eyebrow" id="breadcrumb">PROJECT WORKSPACE · LOCAL</div><div id="topTitle" class="title">오늘의 업무</div></div><div class="topright"><span class="badge">담당자 계정</span><button class="btn alt tiny" onclick="toggleTheme()" aria-label="테마 변경">◐</button><button class="btn alt tiny top-settings" id="settingsButton" onclick="navigate('more')" aria-label="설정 열기" title="설정">⚙ <span>설정</span></button></div></div><div id="view"></div></main></div><nav class="bottom" id="bottom"></nav><div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="dialog" id="dialog"></div></div><div class="toast" id="toast"></div><input id="import" type="file" accept="application/json,.json" hidden onchange="importData(event)"><script>
+</style><style>.ops-panel .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.ops-panel .metric{padding:13px;box-shadow:none}.ops-panel .metric strong{overflow-wrap:anywhere}.ops-warning{border:1px solid var(--line);background:var(--tint);padding:10px 12px;border-radius:10px;font-size:13px}.ops-panel select.field{padding:9px}@media(max-width:500px){.ops-panel .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.ops-panel .metric strong{font-size:17px}}</style><style>
+.gantt-controls{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:12px 0}.gantt-controls select{max-width:210px}
+.gantt-scroller{overflow-x:auto;overscroll-behavior-x:contain;border:1px solid var(--line);border-radius:12px}
+.gantt-table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%;font-size:12px}
+.gantt-table th,.gantt-table td{border-bottom:1px solid var(--line);padding:9px 8px;min-width:37px;text-align:center;height:45px}
+.gantt-table thead th{background:var(--tint);position:sticky;top:0;z-index:1;font-weight:600}
+.gantt-table .gantt-name{text-align:left;position:sticky;left:0;z-index:2;min-width:175px;max-width:225px;width:210px;background:var(--card);box-shadow:2px 0 3px #0000000b;white-space:normal}
+.gantt-table thead .gantt-name{z-index:3;background:var(--tint)}
+.gantt-table td.gantt-cell{padding:0;min-width:37px;background:transparent}
+.gantt-bar{display:block;height:17px;background:var(--primary);opacity:.65;border-radius:4px;margin:0 1px}
+.gantt-bar.done{background:#27a376;opacity:.9}.gantt-bar.milestone{background:#c78d42;opacity:.85}
+.gantt-today{box-shadow:inset 2px 0 #d66e5d}.gantt-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+@media(max-width:650px){.gantt-table .gantt-name{min-width:145px;width:145px;max-width:145px}.gantt-table th,.gantt-table td{min-width:32px}}
+</style></head><body><div class="shell"><aside class="side"><div class="brand"><i></i>NEXUS</div><nav class="nav" id="nav"></nav><div class="sidefoot">담당자 전용 · 내 브라우저에 저장<br>관리자 화면은 하나로 간단하게.</div></aside><main class="main"><div class="top"><div><div class="eyebrow" id="breadcrumb">PROJECT WORKSPACE · LOCAL</div><div id="topTitle" class="title">오늘의 업무</div></div><div class="topright"><span class="badge">담당자 계정</span><button class="btn alt tiny" onclick="toggleTheme()" aria-label="테마 변경">◐</button><button class="btn alt tiny top-settings" id="settingsButton" onclick="navigate('more')" aria-label="설정 열기" title="설정">⚙ <span>설정</span></button></div></div><div id="view"></div></main></div><nav class="bottom" id="bottom"></nav><div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="dialog" id="dialog"></div></div><div class="toast" id="toast"></div><input id="import" type="file" accept="application/json,.json" hidden onchange="importData(event)"><script>
 'use strict';
 const KEY='nexus_workspace_clean_v1', PREF='nexus_clean_prefs';
 // 사용자 요청에 따라 이전 NEXUS 시뮬레이션 기록을 처음 실행할 때 초기화합니다.
@@ -192,12 +205,13 @@ let workView='list', calendarMonth=today().slice(0,7), activityScope='project';
 const stateColumns=[['todo','할 일'],['progress','진행 중'],['review','검토 대기'],['done','완료']];
 function workPage(){
  const p=project();if(!p)return activeCard();
- const buttons=[['list','☷ 목록'],['board','▦ 칸반'],['calendar','▣ 캘린더'],['timeline','⚑ 단계 타임라인'],['activity','◷ 활동 기록']];
+ const buttons=[['list','☷ 목록'],['board','▦ 칸반'],['calendar','▣ 캘린더'],['timeline','⚑ 단계 타임라인'],['gantt','▤ 간트 차트'],['activity','◷ 활동 기록']];
  const select=`<div class="row wrap" style="margin-bottom:14px"><div><strong>${E(p.name)}</strong><div class="muted small">같은 업무를 다양한 방식으로 확인하고 관리하세요.</div></div><button class="btn alt tiny" onclick="navigate('projects')">프로젝트 변경</button></div><nav class="workview-tabs" aria-label="업무 보기 방식">${buttons.map(([k,v])=>`<button class="${workView===k?'active':''}" onclick="workView='${k}';render()">${v}</button>`).join('')}</nav>`;
  if(workView==='list')return select+originalWorkPage();
  if(workView==='board')return select+kanbanView(p);
  if(workView==='calendar')return select+calendarView(p);
  if(workView==='timeline')return select+projectStageTimeline(p);
+ if(workView==='gantt')return select+ganttProjectView(p);
  return select+activityView(p);
 }
 function moveKanbanTask(e,id,statusValue){e.preventDefault();const t=data.tasks.find(x=>x.id===id&&x.projectId===pref.activeId);if(!t||!stateColumns.some(([s])=>s===statusValue))return;if(t.status===statusValue)return;setTaskStatus(id,statusValue)}
@@ -371,6 +385,28 @@ function progressPage(){
  if(analysisProjectId){const p=data.projects.find(x=>x.id===analysisProjectId);return (p?projectStageTimeline(p)+milestonePanel(p)+opsCard(p):'')+base}
  return recommendationCenter()+operationCenter()+`<div class="row wrap" style="margin-bottom:12px"><div><h2 style="margin:0">운영 분석 · 일정 및 인력</h2><p class="muted small">진행률 기록을 바탕으로 전체 프로젝트의 일정과 업무 부담을 점검합니다.</p></div></div>${data.projects.map(p=>projectStageTimeline(p)+milestonePanel(p)+opsCard(p)).join('')||'<div class="empty">프로젝트를 생성하면 분석을 볼 수 있습니다.</div>'}`+base;
 }
+
+
+// Read-only Gantt timeline based on the same projects, tasks and milestones as other views.
+let ganttSpan=21,ganttOffset=0;
+function shiftGantt(n){ganttOffset+=n;render()}
+function ganttDate(d){const x=new Date(d+'T12:00:00');return Number.isNaN(x.getTime())?null:x}
+function ganttDay(d,n){const v=new Date(d.getTime());v.setDate(v.getDate()+n);return v}
+function ganttISO(d){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
+function ganttProjectEnd(p){const start=ganttDate(String(p.startDate||p.createdAt||today()).slice(0,10))||ganttDate(today());return ganttDay(start,(DURATIONS[p.duration]?.[1]||30)-1)}
+function ganttRows(p){const start=String(p.startDate||p.createdAt||today()).slice(0,10),end=ganttISO(ganttProjectEnd(p));const rows=[{name:p.name,start,end,kind:'project',complete:p.status==='completed',pct:projectProgress(p)}];for(const m of milestoneItems(p.id)){if(m.due)rows.push({name:'⚑ '+m.title,start:m.due,end:m.due,kind:'milestone',complete:!!m.completedAt,pct:Number(m.target)||0})}for(const t of data.tasks.filter(t=>t.projectId===p.id&&t.due).slice(0,70)){rows.push({name:'· '+t.title,start:String(t.createdAt||start).slice(0,10)>t.due?t.due:String(t.createdAt||start).slice(0,10),end:t.due,kind:'task',complete:done(t),pct:done(t)?100:0})}return rows}
+function ganttChart(projects){if(!projects.length)return '<div class="empty">표시할 프로젝트가 없습니다.</div>';
+ const all=projects.flatMap(p=>ganttRows(p));const valid=all.flatMap(r=>[ganttDate(r.start),ganttDate(r.end)]).filter(Boolean).sort((a,b)=>a-b);
+ if(!valid.length)return '<div class="empty">날짜가 지정된 일정이 없습니다.</div>';
+ const begin=ganttDay(valid[0],-2+ganttOffset),last=valid[valid.length-1],days=Math.min(400,Math.max(ganttSpan,Math.round((last-begin)/86400000)+3));
+ const count=Math.min(days,ganttSpan),todayStr=today(),dates=Array.from({length:count},(_,i)=>ganttISO(ganttDay(begin,i)));
+ const head=dates.map(d=>`<th class="${d===todayStr?'gantt-today':''}" title="${d}">${d.slice(5).replace('-','/')}</th>`).join('');
+ const body=all.map(r=>`<tr><td class="gantt-name" title="${E(r.name)}"><strong>${E(r.name)}</strong><div class="muted small">${r.kind==='project'?'프로젝트 '+r.pct+'%':r.kind==='milestone'?'중간 목표':'업무'}</div></td>${dates.map(d=>`<td class="gantt-cell ${d===todayStr?'gantt-today':''}" title="${E(r.name)} · ${d}">${d>=r.start&&d<=r.end?`<span class="gantt-bar ${r.complete?'done':''} ${r.kind==='milestone'?'milestone':''}"></span>`:''}</td>`).join('')}</tr>`).join('');
+ return `<div class="gantt-controls"><button class="btn alt tiny" onclick="shiftGantt(-21)">← 이전 3주</button><span class="muted small">${dates[0]} ~ ${dates[dates.length-1]}</span><button class="btn alt tiny" onclick="shiftGantt(21)">다음 3주 →</button><button class="btn alt tiny" onclick="ganttOffset=0;render()">처음으로</button></div><div class="gantt-scroller" role="region" aria-label="프로젝트 일정 간트 차트" tabindex="0"><table class="gantt-table"><thead><tr><th class="gantt-name">프로젝트 / 마일스톤 / 업무</th>${head}</tr></thead><tbody>${body}</tbody></table></div><div class="gantt-legend" style="margin-top:10px"><span>■ 기본 일정</span><span>🟩 완료</span><span>🟨 마일스톤</span><span>│ 오늘</span></div><p class="muted small">가로 스크롤로 날짜를 확인하세요. 일정 변경은 기존 프로젝트·업무·마일스톤 화면에서 진행합니다.</p>`}
+function ganttProjectView(p){return `<section class="panel"><div class="row wrap"><div><h2 style="margin:0">${E(p.name)} · 간트 차트</h2><p class="muted small">프로젝트 기간과 등록된 마일스톤·업무 마감일을 시간축으로 확인합니다.</p></div><button class="btn alt tiny" onclick="navigate('report')">전체 프로젝트 비교</button></div>${ganttChart([p])}</section>`}
+function ganttAllProjects(){return `<section class="panel"><div class="row wrap"><div><h2 style="margin:0">전체 프로젝트 일정 비교</h2><p class="muted small">여러 프로젝트의 시작·종료·마일스톤을 같은 시간축에서 확인합니다.</p></div><button class="btn alt tiny" onclick="navigate('projects')">프로젝트 관리</button></div>${ganttChart(data.projects.filter(p=>p.status!=='completed'))}</section>`}
+const previousProgressPageWithMilestones=progressPage;
+progressPage=function(){return ganttAllProjects()+previousProgressPageWithMilestones()};
 
 load();render();
 </script></body></html>
