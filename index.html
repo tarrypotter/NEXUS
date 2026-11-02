@@ -7,7 +7,18 @@
 .workview-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 1px 12px;scrollbar-width:thin}.workview-tabs button{border:1px solid var(--line);border-radius:12px;padding:11px 15px;color:var(--ink);background:var(--panel);white-space:nowrap;cursor:pointer;font-weight:700}.workview-tabs button.active{background:var(--tint);border-color:var(--primary);color:var(--primary)}
 .kanban-scroll{overflow-x:auto;padding:3px 2px 15px;scrollbar-width:thin}.kanban-board{display:grid;grid-template-columns:repeat(4,minmax(230px,1fr));min-width:960px;gap:12px}.kanban-column{background:var(--tint);border:1px solid var(--line);border-radius:17px;padding:12px;min-height:340px}.kanban-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.kanban-stack{display:flex;flex-direction:column;gap:10px}.kanban-task{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px;display:flex;flex-direction:column;gap:7px;box-shadow:var(--shadow);cursor:grab}.kanban-task strong{font-size:13px;line-height:1.5;overflow-wrap:anywhere}.kanban-task .row{margin-top:5px}.kanban-status{padding:7px!important;width:auto!important;max-width:115px!important;font-size:12px!important}
 .calendar-toolbar{margin-bottom:17px}.calendar-toolbar h2{margin:0;font-size:19px}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-left:1px solid var(--line);border-top:1px solid var(--line)}.calendar-weekday{text-align:center;font-size:12px;font-weight:800;padding:12px 0;background:var(--tint);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.calendar-cell{min-height:98px;padding:7px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}.calendar-cell.is-today{background:var(--tint)}.calendar-day{font-size:12px;font-weight:700;margin-bottom:7px}.calendar-task{display:block;border:0;border-radius:6px;background:var(--tint);color:var(--ink);font-size:11px;text-align:left;padding:5px;margin:3px 0;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.calendar-task.is-done{text-decoration:line-through;opacity:.55}.calendar-more{border:0;background:transparent;color:var(--primary);font-size:11px;cursor:pointer}.activity-entry{display:flex;gap:12px;border-bottom:1px solid var(--line);padding:14px 0;align-items:flex-start}.activity-dot{background:var(--primary);border-radius:50%;width:9px;height:9px;margin-top:6px;flex-shrink:0}.activity-entry strong{font-size:13px}@media(max-width:650px){.calendar-cell{min-height:76px;padding:3px}.calendar-weekday{padding:9px 0}.calendar-task{font-size:10px;padding:4px}.calendar-day{font-size:11px}.calendar-toolbar h2{font-size:16px}}
-</style></head><body><div class="shell"><aside class="side"><div class="brand"><i></i>NEXUS</div><nav class="nav" id="nav"></nav><div class="sidefoot">담당자 전용 · 내 브라우저에 저장<br>관리자 화면은 하나로 간단하게.</div></aside><main class="main"><div class="top"><div><div class="eyebrow" id="breadcrumb">PROJECT WORKSPACE · LOCAL</div><div id="topTitle" class="title">오늘의 업무</div></div><div class="topright"><span class="badge">담당자 계정</span><button class="btn alt tiny" onclick="toggleTheme()" aria-label="테마 변경">◐</button><button class="btn alt tiny top-settings" id="settingsButton" onclick="navigate('more')" aria-label="설정 열기" title="설정">⚙ <span>설정</span></button></div></div><div id="view"></div></main></div><nav class="bottom" id="bottom"></nav><div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="dialog" id="dialog"></div></div><div class="toast" id="toast"></div><input id="import" type="file" accept="application/json,.json" hidden onchange="importData(event)"><script>
+ .operation-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.operation-item:last-of-type{border-bottom:0}@media(max-width:600px){.operation-item{align-items:flex-start;flex-direction:column}.operation-item .task-controls{width:100%}} 
+/* Milestone calendar and stage timeline */
+.calendar-task.is-milestone{background:color-mix(in srgb,var(--primary) 13%,var(--panel,white));border-left:3px solid var(--primary);font-weight:750}
+.timeline-stage{position:relative;padding:2px 0 17px 28px;border-left:2px solid var(--line);margin-left:9px}
+.timeline-stage:last-child{border-left-color:transparent;padding-bottom:2px}
+.timeline-stage:before{content:"";position:absolute;left:-8px;top:5px;width:13px;height:13px;border-radius:50%;background:var(--primary);border:3px solid var(--card,white);box-shadow:0 0 0 1px var(--line)}
+.timeline-stage.is-complete:before{background:#239b73}.timeline-stage.is-late:before{background:#d76b50}
+.timeline-stage .stage-body{border:1px solid var(--line);border-radius:12px;padding:13px;background:var(--tint)}
+.timeline-stage .stage-meter{height:7px;border-radius:20px;background:var(--line);margin-top:9px;overflow:hidden}.timeline-stage .stage-meter>div{height:100%;background:var(--primary)}
+.timeline-overview{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 18px}.timeline-overview span{padding:7px 10px;border-radius:9px;background:var(--tint);font-size:12px}
+@media(max-width:650px){.calendar-task.is-milestone{border-left-width:2px}.timeline-stage{padding-left:19px}}
+</style><style>.ops-panel .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.ops-panel .metric{padding:13px;box-shadow:none}.ops-panel .metric strong{overflow-wrap:anywhere}.ops-warning{border:1px solid var(--line);background:var(--tint);padding:10px 12px;border-radius:10px;font-size:13px}.ops-panel select.field{padding:9px}@media(max-width:500px){.ops-panel .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.ops-panel .metric strong{font-size:17px}}</style></head><body><div class="shell"><aside class="side"><div class="brand"><i></i>NEXUS</div><nav class="nav" id="nav"></nav><div class="sidefoot">담당자 전용 · 내 브라우저에 저장<br>관리자 화면은 하나로 간단하게.</div></aside><main class="main"><div class="top"><div><div class="eyebrow" id="breadcrumb">PROJECT WORKSPACE · LOCAL</div><div id="topTitle" class="title">오늘의 업무</div></div><div class="topright"><span class="badge">담당자 계정</span><button class="btn alt tiny" onclick="toggleTheme()" aria-label="테마 변경">◐</button><button class="btn alt tiny top-settings" id="settingsButton" onclick="navigate('more')" aria-label="설정 열기" title="설정">⚙ <span>설정</span></button></div></div><div id="view"></div></main></div><nav class="bottom" id="bottom"></nav><div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="dialog" id="dialog"></div></div><div class="toast" id="toast"></div><input id="import" type="file" accept="application/json,.json" hidden onchange="importData(event)"><script>
 'use strict';
 const KEY='nexus_workspace_clean_v1', PREF='nexus_clean_prefs';
 // 사용자 요청에 따라 이전 NEXUS 시뮬레이션 기록을 처음 실행할 때 초기화합니다.
@@ -35,7 +46,7 @@ function progressRoster(p){if(!p)return [];const ids=new Set(Array.isArray(p.mem
 function syncProgressRoster(p){if(!p)return;p.employeeProgress??={};for(let m of progressRoster(p)){if(!Number.isFinite(Number(p.employeeProgress[m.id])))p.employeeProgress[m.id]=0;else if(p.employeeProgress[m.id]===undefined)p.employeeProgress[m.id]=0}}
 function weightedProgress(p){if(!p)return 0;const ts=data.tasks.filter(t=>t.projectId===p.id),roster=progressRoster(p);if(!roster.length)return 0;let total=0,weight=0;for(const m of roster){const assigned=ts.filter(t=>t.assigneeId===m.id);const w=Math.max(1,assigned.length);const saved=p.employeeProgress?.[m.id];const rate=saved!==undefined&&saved!==null&&saved!==''&&Number.isFinite(Number(saved))?Number(saved):(assigned.length?Math.round(assigned.filter(done).length/assigned.length*100):0);total+=w*Math.max(0,Math.min(100,rate));weight+=w}return weight?Math.round(total/weight):0}
 function saveEmployeeProgress(id){let p=project(),v=document.getElementById('employeePercent_'+id);if(!p||!v||!progressRoster(p).some(m=>m.id===id))return;let pct=Math.max(0,Math.min(100,Number(v.value)||0)),before=Number(p.employeeProgress?.[id]??0);p.employeeProgress??={};p.employeeProgress[id]=pct;p.progressHistory??=[];p.progressHistory.push({date:today(),at:stamp(),memberId:id,previous:before,percent:pct});saveChange(name(id)+' 진행률을 '+pct+'%로 저장했어요')}
-function progressPage(){
+function baseProgressPage(){
  if(analysisProjectId){const p=data.projects.find(x=>x.id===analysisProjectId);if(p){return `<div class="row wrap" style="margin-bottom:16px"><button class="btn alt" onclick="analysisProjectId='';render()">← 전체 프로젝트·직원 분석</button><span class="badge">${E(p.name)} 상세</span></div>`+projectProgressPage()}analysisProjectId=''}
  const ps=data.projects, active=ps.filter(p=>p.status!=='completed'), allTasks=data.tasks.filter(t=>ps.some(p=>p.id===t.projectId));
  const totalWeight=ps.reduce((n,p)=>n+Math.max(1,data.tasks.filter(t=>t.projectId===p.id).length),0);
@@ -181,11 +192,12 @@ let workView='list', calendarMonth=today().slice(0,7), activityScope='project';
 const stateColumns=[['todo','할 일'],['progress','진행 중'],['review','검토 대기'],['done','완료']];
 function workPage(){
  const p=project();if(!p)return activeCard();
- const buttons=[['list','☷ 목록'],['board','▦ 칸반'],['calendar','▣ 캘린더'],['activity','◷ 활동 기록']];
+ const buttons=[['list','☷ 목록'],['board','▦ 칸반'],['calendar','▣ 캘린더'],['timeline','⚑ 단계 타임라인'],['activity','◷ 활동 기록']];
  const select=`<div class="row wrap" style="margin-bottom:14px"><div><strong>${E(p.name)}</strong><div class="muted small">같은 업무를 다양한 방식으로 확인하고 관리하세요.</div></div><button class="btn alt tiny" onclick="navigate('projects')">프로젝트 변경</button></div><nav class="workview-tabs" aria-label="업무 보기 방식">${buttons.map(([k,v])=>`<button class="${workView===k?'active':''}" onclick="workView='${k}';render()">${v}</button>`).join('')}</nav>`;
  if(workView==='list')return select+originalWorkPage();
  if(workView==='board')return select+kanbanView(p);
  if(workView==='calendar')return select+calendarView(p);
+ if(workView==='timeline')return select+projectStageTimeline(p);
  return select+activityView(p);
 }
 function moveKanbanTask(e,id,statusValue){e.preventDefault();const t=data.tasks.find(x=>x.id===id&&x.projectId===pref.activeId);if(!t||!stateColumns.some(([s])=>s===statusValue))return;if(t.status===statusValue)return;setTaskStatus(id,statusValue)}
@@ -193,8 +205,21 @@ function beginKanbanDrag(e,id){if(e.dataTransfer){e.dataTransfer.setData('text/p
 function receiveKanbanDrop(e,state){e.preventDefault();const id=e.dataTransfer?.getData('text/plain');if(!id)return;moveKanbanTask(e,id,state)}
 function kanbanView(p){const ts=tasks();return `<div class="row wrap" style="margin:15px 0"><span class="muted small">카드를 다른 칸으로 끌어 이동하거나, 모바일에서는 카드 아래 상태 선택으로 변경하세요.</span><button class="btn tiny" onclick="editTask()">＋ 업무 추가</button></div><div class="kanban-scroll"><div class="kanban-board">${stateColumns.map(([state,label])=>{const arr=ts.filter(t=>(t.status||'todo')===state||(state==='done'&&t.status==='completed'));return `<section class="kanban-column" ondragover="event.preventDefault()" ondrop="receiveKanbanDrop(event,'${state}')"><div class="kanban-heading"><strong>${label}</strong><span class="badge">${arr.length}</span></div><div class="kanban-stack">${arr.map(t=>`<article class="kanban-task" draggable="true" ondragstart="beginKanbanDrag(event,'${E(t.id)}')"><strong>${E(t.title)}</strong><span class="muted small">${E(name(t.assigneeId))}</span><span class="muted small">${t.due?'마감 '+E(t.due):'마감 미지정'}</span><div class="row wrap"><button class="btn alt tiny" onclick="editTask('${E(t.id)}')">상세</button><select class="field kanban-status" aria-label="${E(t.title)} 상태 변경" onchange="setTaskStatus('${E(t.id)}',this.value)">${stateColumns.map(([x,v])=>`<option value="${x}" ${state===x?'selected':''}>${v}</option>`).join('')}</select></div></article>`).join('')||'<div class="empty small">업무 없음</div>'}</div></section>`}).join('')}</div></div>`}
 function shiftCalendar(n){let [y,m]=calendarMonth.split('-').map(Number);let d=new Date(y,m-1+n,1);calendarMonth=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;render()}
-function calendarView(p){let [y,m]=calendarMonth.split('-').map(Number);let first=new Date(y,m-1,1).getDay(),days=new Date(y,m,0).getDate(),ts=tasks();let cells=[];for(let i=0;i<first;i++)cells.push('<div class="calendar-cell empty-cell"></div>');for(let day=1;day<=days;day++){let date=`${calendarMonth}-${String(day).padStart(2,'0')}`,arr=ts.filter(t=>t.due===date);cells.push(`<div class="calendar-cell ${date===today()?'is-today':''}"><div class="calendar-day">${day}${date===today()?' · 오늘':''}</div>${arr.slice(0,4).map(t=>`<button class="calendar-task ${done(t)?'is-done':''}" title="${E(t.title)}" onclick="editTask('${E(t.id)}')">${E(t.title)}</button>`).join('')}${arr.length>4?`<button class="calendar-more" onclick="showCalendarDay('${date}')">+${arr.length-4}건 더 보기</button>`:''}</div>`)}return `<div class="panel"><div class="row wrap calendar-toolbar"><button class="btn alt tiny" onclick="shiftCalendar(-1)">〈 이전 달</button><h2>${y}년 ${m}월</h2><div class="row wrap"><button class="btn alt tiny" onclick="calendarMonth=today().slice(0,7);render()">이번 달</button><button class="btn alt tiny" onclick="shiftCalendar(1)">다음 달 〉</button></div></div><div class="calendar-grid">${['일','월','화','수','목','금','토'].map(d=>`<div class="calendar-weekday">${d}</div>`).join('')}${cells.join('')}</div><div class="hint">각 업무의 마감일을 기준으로 표시합니다. 업무를 누르면 마감일을 수정할 수 있어요.</div></div>`}
-function showCalendarDay(date){let arr=tasks().filter(t=>t.due===date);openModal(`<h2>${E(date)} 마감 업무 (${arr.length}건)</h2>${arr.map(t=>`<div class="task"><div><strong>${E(t.title)}</strong><p class="muted small">${E(name(t.assigneeId))} · ${status(t.status)}</p></div><button class="btn alt tiny" onclick="editTask('${E(t.id)}')">보기</button></div>`).join('')}<div class="actions"><button class="btn alt" onclick="closeModal()">닫기</button></div>`)}
+function calendarView(p){
+ let [y,m]=calendarMonth.split('-').map(Number),first=new Date(y,m-1,1).getDay(),days=new Date(y,m,0).getDate();
+ let ts=tasks(),ms=milestoneItems(p.id),cells=[];
+ for(let i=0;i<first;i++)cells.push('<div class="calendar-cell empty-cell"></div>');
+ for(let day=1;day<=days;day++){
+  const date=`${calendarMonth}-${String(day).padStart(2,'0')}`;
+  const events=[...ms.filter(x=>x.due===date).map(x=>({kind:'milestone',id:x.id,title:x.title,complete:!!x.completedAt})),...ts.filter(t=>t.due===date).map(t=>({kind:'task',id:t.id,title:t.title,complete:done(t)}))];
+  cells.push(`<div class="calendar-cell ${date===today()?'is-today':''}"><div class="calendar-day">${day}${date===today()?' · 오늘':''}</div>${events.slice(0,4).map(e=>`<button class="calendar-task ${e.complete?'is-done':''} ${e.kind==='milestone'?'is-milestone':''}" title="${E(e.title)}" onclick="${e.kind==='milestone'?`openMilestoneForm('${E(p.id)}','${E(e.id)}')`:`editTask('${E(e.id)}')`}">${e.kind==='milestone'?'⚑ ':''}${E(e.title)}</button>`).join('')}${events.length>4?`<button class="calendar-more" onclick="showCalendarDay('${date}')">+${events.length-4}건 더 보기</button>`:''}</div>`)
+ }
+ return `<div class="panel"><div class="row wrap calendar-toolbar"><button class="btn alt tiny" onclick="shiftCalendar(-1)">〈 이전 달</button><h2>${y}년 ${m}월</h2><div class="row wrap"><button class="btn alt tiny" onclick="calendarMonth=today().slice(0,7);render()">이번 달</button><button class="btn alt tiny" onclick="shiftCalendar(1)">다음 달 〉</button></div></div><div class="calendar-grid">${['일','월','화','수','목','금','토'].map(d=>`<div class="calendar-weekday">${d}</div>`).join('')}${cells.join('')}</div><div class="hint">⚑ 마일스톤 점검일과 업무 마감일을 함께 표시합니다. 항목을 누르면 수정할 수 있어요.</div></div>`
+}
+function showCalendarDay(date){
+ const arr=tasks().filter(t=>t.due===date),p=project(),ms=p?milestoneItems(p.id).filter(m=>m.due===date):[];
+ openModal(`<h2>${E(date)} 일정 (${arr.length+ms.length}건)</h2>${ms.map(m=>`<div class="task"><div><strong>⚑ ${E(m.title)}</strong><p class="muted small">중간 목표 ${Number(m.target)||0}% · ${m.completedAt?'완료':'점검 예정'}</p></div><button class="btn alt tiny" onclick="openMilestoneForm('${E(m.projectId)}','${E(m.id)}')">보기</button></div>`).join('')}${arr.map(t=>`<div class="task"><div><strong>${E(t.title)}</strong><p class="muted small">${E(name(t.assigneeId))} · ${status(t.status)}</p></div><button class="btn alt tiny" onclick="editTask('${E(t.id)}')">보기</button></div>`).join('')}<div class="actions"><button class="btn alt" onclick="closeModal()">닫기</button></div>`)
+}
 function writeActivity(type,detail,projectId){data.activities??=[];data.activities.unshift({id:uid(),at:stamp(),projectId:projectId||pref.activeId||'',type,detail:detail||type});if(data.activities.length>600)data.activities.length=600}
 function activityView(p){let arr=(data.activities||[]).filter(a=>activityScope==='all'||a.projectId===p.id).slice(0,150);return `<div class="panel"><div class="row wrap" style="margin-bottom:16px"><div><h2 style="margin:0">업무 활동 기록</h2><p class="muted small">프로젝트의 변경 사항을 시간 순으로 확인합니다. 기록은 이 기기의 브라우저에 저장됩니다.</p></div><select class="field" style="max-width:170px" onchange="activityScope=this.value;render()"><option value="project" ${activityScope==='project'?'selected':''}>현재 프로젝트</option><option value="all" ${activityScope==='all'?'selected':''}>전체 프로젝트</option></select></div>${arr.length?arr.map(a=>`<div class="activity-entry"><span class="activity-dot"></span><div><strong>${E(a.detail||a.type||'변경 기록')}</strong><div class="muted small">${E(pName(a.projectId))} · ${E((a.at||a.createdAt||'').replace('T',' ').slice(0,19))}</div></div></div>`).join(''):'<div class="empty">아직 기록이 없습니다. 업무의 상태를 변경하면 여기에 기록돼요.</div>'}</div>`}
 // Keep original task update behavior and add a readable activity entry.
@@ -204,6 +229,148 @@ const originalSaveTask=saveTask;
 saveTask=function(e,id){const existing=data.tasks.find(t=>t.id===id),f=new FormData(e.target),title=String(f.get('title')||'').trim();writeActivity(id?'업무 수정':'업무 생성',`${id?'업무 수정':'업무 생성'}: ${title}`,existing?.projectId||pref.activeId);originalSaveTask(e,id)};
 const originalSaveProject=saveProject;
 saveProject=function(e,id){const f=new FormData(e.target);writeActivity(id?'프로젝트 수정':'프로젝트 생성',`${id?'프로젝트 수정':'프로젝트 생성'}: ${String(f.get('name')||'').trim()}`,id||pref.activeId);originalSaveProject(e,id)};
+
+
+/* Project operations analysis: calculations use only currently enrolled staff. */
+let opsPeopleAdjustment={};
+const opsClamp=(n,a=0,b=100)=>Math.min(b,Math.max(a,Number(n)||0));
+function opsHistory(p){
+ const roster=progressRoster(p),ids=new Set(roster.map(m=>m.id));
+ const current=Object.fromEntries(roster.map(m=>[m.id,opsClamp(p.employeeProgress?.[m.id])]));
+ const log=(p.progressHistory||[]).filter(h=>ids.has(h.memberId)&&/^\d{4}-\d{2}-\d{2}$/.test(String(h.date||''))).slice().sort((a,b)=>String(a.at||a.date).localeCompare(String(b.at||b.date)));
+ // Roll backwards from current saved state to reconstruct daily snapshots.
+ const days=[...new Set(log.map(h=>h.date))].sort(),snapshots={};
+ const values={...current};
+ for(let i=log.length-1;i>=0;i--){const h=log[i];if(!snapshots[h.date])snapshots[h.date]={...values};values[h.memberId]=opsClamp(h.previous)}
+ const ts=data.tasks.filter(t=>t.projectId===p.id);
+ function rate(v){let sum=0,wSum=0;for(const m of roster){let w=Math.max(1,ts.filter(t=>t.assigneeId===m.id).length);sum+=opsClamp(v[m.id])*w;wSum+=w}return wSum?sum/wSum:0}
+ return {days,points:days.map(d=>({date:d,rate:Math.round(rate(snapshots[d])*10)/10})),now:rate(current),staff:roster};
+}
+function opsForecast(p){
+ const h=opsHistory(p), points=h.points,actual=projectProgress(p),last=points[points.length-1];
+ if(actual>=100)return {message:'진행률 100%에 도달',days:0};
+ if(points.length<2)return {message:'서로 다른 날짜의 기록이 2일 이상 필요',days:null};
+ const first=points[0],distance=Math.round((new Date(last.date+'T12:00:00')-new Date(first.date+'T12:00:00'))/86400000);
+ if(distance<=0)return {message:'기간 데이터 부족',days:null};
+ const speed=(last.rate-first.rate)/distance;
+ if(speed<=0.05)return {message:'최근 기록상 진행 속도가 정체되어 완료일 예측 보류',days:null};
+ const remaining=Math.ceil((100-actual)/speed);
+ if(remaining>3650)return {message:'예상 기간이 지나치게 길어 예측 보류',days:null};
+ const d=new Date(today()+'T12:00:00');d.setDate(d.getDate()+remaining);
+ return {message:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`,days:remaining,speed};
+}
+function opsChart(points){
+ if(!points.length)return '<div class="empty">진행률을 저장하면 변화 이력이 여기에 기록됩니다.</div>';
+ const w=640,h=205,l=36,r=18,t=18,b=36,innerW=w-l-r,innerH=h-t-b;
+ const xs=points.map((p,i)=>l+(points.length===1?innerW/2:i*innerW/(points.length-1)));
+ const ys=points.map(p=>t+(100-opsClamp(p.rate))/100*innerH);
+ const coords=xs.map((x,i)=>`${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
+ const lines=[0,25,50,75,100].map(n=>{let y=t+(100-n)/100*innerH;return `<line x1="${l}" y1="${y}" x2="${w-r}" y2="${y}" stroke="var(--line)"/><text x="${l-8}" y="${y+4}" text-anchor="end" font-size="11" fill="var(--sub)">${n}</text>`}).join('');
+ const dots=xs.map((x,i)=>`<circle cx="${x}" cy="${ys[i]}" r="4" fill="var(--primary)"><title>${E(points[i].date)} · ${points[i].rate}%</title></circle>`).join('');
+ const labels=[0,points.length-1].filter((x,i,a)=>a.indexOf(x)===i).map(i=>`<text x="${xs[i]}" y="${h-10}" text-anchor="middle" font-size="12" fill="var(--sub)">${E(points[i].date.slice(5))}</text>`).join('');
+ return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="날짜별 진행률 추이" style="display:block;width:100%;max-height:230px">${lines}<polyline points="${coords}" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${dots}${labels}</svg>`;
+}
+function opsCard(p){
+ const ts=data.tasks.filter(t=>t.projectId===p.id),staff=progressRoster(p),h=opsHistory(p),forecast=opsForecast(p),actual=projectProgress(p),plan=plannedProgress(p),dueDays=(DURATIONS[p.duration]?.[1]||30)-daysSince((p.startDate||p.createdAt||today()).slice(0,10));
+ const changes=h.points.length>1?(h.points[h.points.length-1].rate-h.points[0].rate).toFixed(1):null;
+ const totalWork=staff.reduce((n,m)=>n+ts.filter(t=>t.assigneeId===m.id).length,0);
+ const load=staff.map(m=>({m,count:ts.filter(t=>t.assigneeId===m.id).length})).sort((a,b)=>b.count-a.count);
+ const risks=[];
+ if(!staff.length)risks.push('프로젝트 참여 직원이 없습니다.');
+ if(ts.length&&!totalWork)risks.push('업무가 참여 직원에게 배정되지 않았습니다.');
+ if(dueDays<=7&&actual<100)risks.push(dueDays<0?'프로젝트 예정 기간이 지났습니다.':'종료 예정일까지 7일 이하 남았습니다.');
+ if(plan-actual>=15)risks.push('계획보다 진행률이 15%p 이상 낮습니다.');
+ if(h.points.length>1&&changes!==null&&Number(changes)<=0)risks.push('기록된 기간에 진행률 상승이 없습니다.');
+ const add=opsPeopleAdjustment[p.id]??0,capacity=staff.length+add;
+ const hypothetical=staff.length&&capacity?Math.max(1,Math.round((100-actual)*staff.length/capacity)):null;
+ return `<section class="panel ops-panel" style="margin-bottom:16px"><div class="row wrap"><div><h2 style="margin:0">${E(p.name)}</h2><p class="muted small">참여 ${staff.length}명 · 업무 ${ts.length}건 · 계획 ${plan}% · 실제 ${actual}%</p></div><span class="badge">${p.status==='completed'?'완료':'진행 중'}</span></div>
+ <div class="grid metrics" style="margin-top:14px"><div class="panel metric"><span class="muted small">계획 대비</span><strong>${actual-plan>0?'+':''}${actual-plan}%p</strong></div><div class="panel metric"><span class="muted small">기록된 변화량</span><strong>${changes===null?'기록 부족':`${Number(changes)>0?'+':''}${changes}%p`}</strong></div><div class="panel metric"><span class="muted small">예상 완료일</span><strong style="font-size:17px">${E(forecast.message)}</strong></div><div class="panel metric"><span class="muted small">남은 예정 기간</span><strong>${Math.max(0,dueDays)}일${dueDays<0?' (초과)':''}</strong></div></div>
+ <h3 style="margin:20px 0 8px">날짜별 진행률</h3>${opsChart(h.points)}<p class="muted small">저장된 날짜별 스냅샷 기준이며 기록되지 않은 날짜는 추정하지 않습니다.</p>
+ <h3 style="margin:18px 0 10px">참여 직원 업무 부담</h3>${load.length?load.map(({m,count})=>`<div class="person"><span>${E(m.name)} <span class="muted small">${E(m.role)}</span></span><span class="badge">${count}건 · ${Math.round(totalWork?count/totalWork*100:0)}%</span></div>`).join(''):'<div class="empty">참여 직원이 없습니다.</div>'}
+ <h3 style="margin:20px 0 10px">관리 점검 알림</h3>${risks.length?risks.map(x=>`<p class="ops-warning">⚠ ${E(x)}</p>`).join(''):'<p class="muted small">현재 정의된 조건에 해당하는 위험 신호가 없습니다.</p>'}
+ <h3 style="margin:18px 0 8px">가상 인력 추가 시뮬레이션</h3><p class="muted small">추가 인원을 선택해도 실제 직원 명부나 프로젝트 배정은 바뀌지 않습니다.</p><div class="row wrap" style="gap:9px"><label for="opsAdd_${E(p.id)}">가상 추가 인원</label><select id="opsAdd_${E(p.id)}" class="field" style="max-width:112px" onchange="opsPeopleAdjustment['${E(p.id)}']=Number(this.value);render()">${[0,1,2,3,4,5].map(n=>`<option value="${n}" ${n===add?'selected':''}>+${n}명</option>`).join('')}</select><span class="badge">현재 ${staff.length}명 → 가정 ${capacity}명</span></div><p class="muted small">${hypothetical===null?'참여 직원이 없어 비교할 수 없습니다.':`남은 작업량의 1인당 부담 지수: 현재 100 → 가정 ${hypothetical} (단순 균등 분할 모델)`} · 일정 단축을 보장하지 않습니다.</p></section>`;
+}
+// Project risk recommendations: derived only from enrolled people and existing records.
+function recommendedActions(){
+ const suggestions=[];
+ for(const p of data.projects.filter(p=>p.status!=='completed')){
+  const roster=progressRoster(p),ids=new Set(roster.map(m=>m.id));
+  const projectTasks=data.tasks.filter(t=>t.projectId===p.id);
+  const assigned=projectTasks.filter(t=>ids.has(t.assigneeId));
+  const actual=projectProgress(p),plan=plannedProgress(p);
+  const limit=DURATIONS[p.duration]?.[1]||30;
+  const age=daysSince((p.startDate||p.createdAt||today()).slice(0,10));
+  const remaining=limit-age;
+  const history=opsHistory(p).points;
+  const add=(code,title,note,priority)=>suggestions.push({key:p.id+':'+code,projectId:p.id,code,title,note,priority});
+  if(!roster.length)add('no-staff','프로젝트 참여 직원 배정','참여자가 없습니다. 직원 명부에서 필요한 인원을 선택하고 프로젝트에 투입하세요.','urgent');
+  if(projectTasks.length&&!assigned.length)add('unassigned','업무 배정 상태 점검',`업무 ${projectTasks.length}건 중 현재 참여 직원에게 배정된 업무가 없습니다. 참여자를 확인하고 업무 자동 재배정을 검토하세요.`,'high');
+  if(remaining<0&&actual<100)add('overdue','프로젝트 일정 재검토',`예정 기간이 ${Math.abs(remaining)}일 지났으며 진행률은 ${actual}%입니다. 남은 작업과 일정 조정을 검토하세요.`,'urgent');
+  else if(remaining>=0&&remaining<=7&&actual<100)add('due-soon','종료 기한 임박 점검',`예상 종료까지 ${remaining}일 남았습니다. 현재 진행률 ${actual}%와 잔여 업무를 확인하세요.`,'high');
+  for(const m of milestoneItems(p.id)){if(!m.completedAt&&m.due&&m.due<today())add('milestone-overdue-'+m.id,'중간 목표 기한 초과',`${m.title} 목표의 점검일(${m.due})이 지났습니다. 진행 상태를 확인하세요.`,'high');else if(!m.completedAt&&m.due===today()&&actual<Number(m.target||0))add('milestone-check-'+m.id,'오늘 중간 목표 점검',`${m.title} 목표 ${m.target}% / 실제 ${actual}%입니다. 중간 결과물을 검토하세요.`,'normal')}
+  if(plan-actual>=15)add('behind-plan','계획 대비 진행률 점검',`계획 ${plan}% / 입력 진행률 ${actual}%로 ${plan-actual}%p 차이가 납니다. 일정이나 진행률 입력 현황을 확인하세요.`,'high');
+  if(history.length>=2){const recent=history[history.length-1],prior=history[history.length-2]; const gap=Math.round((new Date(recent.date+'T12:00:00')-new Date(prior.date+'T12:00:00'))/86400000);if(gap>=3&&recent.rate<=prior.rate)add('stalled','진행률 정체 확인',`최근 두 기록(${prior.date}~${recent.date}) 동안 진행률 상승이 없습니다. 상태 확인을 권장합니다.`,'normal')}
+ }
+ return suggestions;
+}
+function recommendationCenter(){
+ const pending=recommendedActions().filter(r=>!operationItems().some(a=>a.recommendationKey===r.key));
+ const cards=pending.map(r=>{const p=data.projects.find(p=>p.id===r.projectId);return `<article class="operation-item"><div style="flex:1;min-width:0"><div class="row wrap" style="justify-content:flex-start"><strong>${E(r.title)}</strong><span class="badge">${r.priority==='urgent'?'긴급':r.priority==='high'?'높음':'보통'}</span></div><p class="muted small" style="margin:5px 0">${E(p?.name||'프로젝트')}</p><p class="small" style="margin:4px 0;line-height:1.6">${E(r.note)}</p></div><button type="button" class="btn alt tiny" onclick="registerRecommendation('${E(r.key)}')">조치로 등록</button></article>`}).join('');
+ return `<section class="panel" style="margin-bottom:18px"><div class="row wrap"><div><h2 style="margin:0">자동 위험 점검 · 추천 조치</h2><p class="muted small" style="margin:5px 0">전체 프로젝트를 분석한 참고용 제안입니다. 직접 등록해야 조치 목록에 추가됩니다.</p></div><span class="badge">새 추천 ${pending.length}건</span></div>${cards||'<div class="empty" style="margin-top:14px">새로 추천할 조치가 없습니다. 이미 등록된 항목은 아래 운영센터에서 관리하세요.</div>'}<p class="muted small" style="margin:12px 0 0">동일한 위험 유형은 프로젝트별로 한 번만 조치로 등록합니다. 조치를 완료하거나 삭제한 경우도 중복 생성하지 않습니다. 실제 직원의 성실도 평가에는 사용하지 않습니다.</p></section>`;
+}
+function registerRecommendation(key){
+ const r=recommendedActions().find(x=>x.key===key);if(!r)return toast('위험 신호가 해소되어 추천이 사라졌어요');
+ data.projectActions??=[];
+ if(data.projectActions.some(x=>x.recommendationKey===key))return toast('이미 등록된 조치입니다');
+ data.projectActions.push({id:uid(),projectId:r.projectId,title:r.title,note:r.note,priority:r.priority,due:'',status:'open',createdAt:stamp(),recommendationKey:key});
+ saveChange('추천 조치를 등록했어요');
+}
+// 담당자 운영센터: 조치 항목은 실제 프로젝트 데이터와 별도로 보존됩니다.
+let operationFilter='all';
+function operationItems(){return Array.isArray(data.projectActions)?data.projectActions:[]}
+function operationPriority(x){return ({urgent:0,high:1,normal:2,low:3})[x]??2}
+function operationCenter(){
+ const projects=data.projects,items=operationItems();
+ const open=items.filter(a=>a.status!=='done'), urgent=open.filter(a=>a.priority==='urgent'||a.priority==='high').length;
+ const sorted=[...items].filter(a=>operationFilter==='all'||(operationFilter==='open'?a.status!=='done':operationFilter==='done'?a.status==='done':a.projectId===operationFilter)).sort((a,b)=>(a.status==='done')-(b.status==='done')||operationPriority(a.priority)-operationPriority(b.priority)||String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+ const select=projects.map(p=>`<option value="${E(p.id)}" ${operationFilter===p.id?'selected':''}>${E(p.name)}</option>`).join('');
+ return `<section class="panel" style="margin-bottom:18px"><div class="row wrap"><div><h2 style="margin:0">담당자 운영센터</h2><p class="muted small" style="margin:4px 0">전체 프로젝트의 확인 사항과 후속 조치를 직접 관리합니다.</p></div><button class="btn" onclick="openOperationForm()">+ 조치 등록</button></div>
+ <div class="grid metrics" style="margin:16px 0"><div class="panel metric"><span class="muted small">전체 프로젝트</span><strong>${projects.length}</strong></div><div class="panel metric"><span class="muted small">진행 중인 조치</span><strong>${open.length}</strong></div><div class="panel metric"><span class="muted small">높은 우선순위</span><strong>${urgent}</strong></div><div class="panel metric"><span class="muted small">완료된 조치</span><strong>${items.length-open.length}</strong></div></div>
+ <div class="row wrap" style="margin-bottom:10px"><label for="operationFilter" class="muted small">조치 목록 필터</label><select id="operationFilter" class="field" style="max-width:290px" onchange="operationFilter=this.value;render()"><option value="all" ${operationFilter==='all'?'selected':''}>전체</option><option value="open" ${operationFilter==='open'?'selected':''}>미완료만</option><option value="done" ${operationFilter==='done'?'selected':''}>완료만</option>${select}</select></div>
+ ${sorted.length?sorted.map(a=>{const p=projects.find(p=>p.id===a.projectId);return `<article class="operation-item"><div style="min-width:0;flex:1"><div class="row wrap" style="justify-content:flex-start"><strong>${E(a.title)}</strong><span class="badge">${({urgent:'긴급',high:'높음',normal:'보통',low:'낮음'})[a.priority]||'보통'}</span><span class="pill">${a.status==='done'?'완료':'확인 필요'}</span></div><div class="muted small">${E(p?.name||'삭제된 프로젝트')} · 등록 ${E((a.createdAt||'').slice(0,10))}${a.due?' · 기한 '+E(a.due):''}</div>${a.note?`<p class="small" style="margin:5px 0;white-space:pre-wrap;overflow-wrap:anywhere">${E(a.note)}</p>`:''}</div><div class="task-controls"><button class="btn alt tiny" onclick="toggleOperation('${E(a.id)}')">${a.status==='done'?'다시 열기':'처리 완료'}</button><button class="btn ghost tiny" onclick="openOperationForm('${E(a.id)}')">수정</button></div></article>`}).join(''):'<div class="empty">조건에 맞는 조치가 없습니다. 필요한 점검 사항을 등록해 보세요.</div>'}
+ <p class="muted small" style="margin:12px 0 0">위험 알림은 참고 지표이며, 조치 목록은 담당자가 등록·완료 처리한 항목입니다. 직원 평가 점수로 사용하지 않습니다.</p></section>`;
+}
+function openOperationForm(id=''){
+ const a=operationItems().find(x=>x.id===id)||{projectId:analysisProjectId||pref.activeId||data.projects[0]?.id||'',title:'',note:'',priority:'normal',due:''};
+ if(!data.projects.length){toast('프로젝트를 먼저 생성해 주세요');return}
+ openModal(`<h2>${id?'조치 수정':'새 조치 등록'}</h2><form onsubmit="saveOperation(event,'${E(id)}')"><label class="fieldlabel">프로젝트</label><select class="field" name="projectId" required>${data.projects.map(p=>`<option value="${E(p.id)}" ${a.projectId===p.id?'selected':''}>${E(p.name)}</option>`).join('')}</select><label class="fieldlabel">확인·조치할 일 *</label><input class="field" name="title" value="${E(a.title)}" maxlength="100" required placeholder="예: 서버 개발 일정 재확인"><label class="fieldlabel">우선순위</label><select class="field" name="priority">${[['urgent','긴급'],['high','높음'],['normal','보통'],['low','낮음']].map(([k,v])=>`<option value="${k}" ${a.priority===k?'selected':''}>${v}</option>`).join('')}</select><label class="fieldlabel">확인 기한 (선택)</label><input class="field" name="due" type="date" value="${E(a.due||'')}"><label class="fieldlabel">메모</label><textarea class="field" name="note" rows="4" maxlength="3000" placeholder="담당자 판단 또는 다음 조치">${E(a.note||'')}</textarea><div class="actions">${id?`<button class="btn danger" type="button" onclick="deleteOperation('${E(id)}')">삭제</button>`:''}<button class="btn alt" type="button" onclick="closeModal()">취소</button><button class="btn">저장</button></div></form>`);
+}
+function saveOperation(e,id){e.preventDefault();const f=new FormData(e.target);if(!data.projects.some(p=>p.id===f.get('projectId')))return;data.projectActions??=[];let a=data.projectActions.find(x=>x.id===id);if(!a){a={id:uid(),status:'open',createdAt:stamp()};data.projectActions.push(a)}Object.assign(a,{projectId:String(f.get('projectId')),title:String(f.get('title')).trim(),priority:String(f.get('priority')),due:String(f.get('due')||''),note:String(f.get('note')||'')});closeModal();saveChange('담당자 조치를 저장했어요')}
+function toggleOperation(id){const a=operationItems().find(x=>x.id===id);if(!a)return;a.status=a.status==='done'?'open':'done';a.resolvedAt=a.status==='done'?stamp():null;saveChange('조치 상태를 변경했어요')}
+function deleteOperation(id){if(!confirm('이 조치를 삭제할까요?'))return;data.projectActions=operationItems().filter(x=>x.id!==id);closeModal();saveChange('조치를 삭제했어요')}
+// Project-specific milestones and checkpoints; existing records remain untouched.
+function milestoneItems(pid){data.projectMilestones??=[];return data.projectMilestones.filter(x=>x.projectId===pid).sort((a,b)=>String(a.due||'9999').localeCompare(String(b.due||'9999')))}
+function projectStageTimeline(p){
+ const ms=milestoneItems(p.id),actual=projectProgress(p),finished=ms.filter(m=>m.completedAt).length;
+ const start=String(p.startDate||p.createdAt||'').slice(0,10);
+ const rows=ms.map((m,i)=>{
+  const late=!m.completedAt&&m.due&&m.due<today();
+  const met=actual>=Number(m.target||0);
+  const label=m.completedAt?'완료':late?'기한 초과':met?'목표 진행률 도달':'진행 중';
+  return `<div class="timeline-stage ${m.completedAt?'is-complete':late?'is-late':''}"><div class="stage-body"><div class="row wrap" style="justify-content:space-between;align-items:center;gap:8px"><strong>${i+1}단계 · ${E(m.title)}</strong><span class="badge">${label}</span></div><p class="muted small" style="margin:7px 0">점검 ${E(m.due||'미정')} · 목표 ${Number(m.target)||0}% · 실제 ${actual}%</p>${m.note?`<p class="muted small">${E(m.note)}</p>`:''}<div class="stage-meter"><div style="width:${Math.max(0,Math.min(100,actual))}%"></div></div><div class="row wrap" style="margin-top:10px"><button class="btn alt tiny" onclick="openMilestoneForm('${E(p.id)}','${E(m.id)}')">단계 수정</button><button class="btn alt tiny" onclick="toggleMilestone('${E(m.id)}')">${m.completedAt?'다시 열기':'완료 처리'}</button></div></div></div>`;
+ }).join('');
+ return `<section class="panel" style="margin-bottom:17px"><div class="row wrap"><div><h2 style="margin:0">${E(p.name)} · 단계별 타임라인</h2><p class="muted small" style="margin:6px 0">프로젝트 시작 ${E(start||'미정')} · 실제 진행률 ${actual}%</p></div><button class="btn" onclick="openMilestoneForm('${E(p.id)}')">+ 단계 추가</button></div><div class="timeline-overview"><span>총 ${ms.length}단계</span><span>완료 ${finished}단계</span><span>남은 단계 ${ms.length-finished}개</span></div>${rows||'<div class="empty">등록된 중간 목표가 없습니다. 단계를 추가하면 일정순으로 타임라인에 표시됩니다.</div>'}<p class="muted small">마일스톤 완료는 별도의 점검 기록이며 직원별 진행률은 자동으로 변경하지 않습니다.</p></section>`;
+}
+function milestonePanel(p){const items=milestoneItems(p.id),actual=projectProgress(p);const rows=items.map(m=>{const late=!m.completedAt&&m.due&&m.due<today();const watch=!m.completedAt&&m.due&&m.due<=today()&&actual<Number(m.target||0);const state=m.completedAt?'완료':late?'기한 초과':watch?'점검 필요':'진행 중';return `<article class="operation-item"><div style="flex:1;min-width:0"><div class="row wrap" style="justify-content:flex-start;gap:8px"><strong>${E(m.title)}</strong><span class="badge">${state}</span></div><p class="muted small" style="margin:6px 0">${E(m.due||'날짜 미정')} · 목표 ${Number(m.target)||0}% · 현재 ${actual}% ${m.note?'· '+E(m.note):''}</p><div style="height:7px;background:var(--tint);border-radius:12px;overflow:hidden"><div style="height:100%;width:${Math.min(100,Math.max(0,actual))}%;background:var(--primary)"></div></div></div><div class="task-controls" style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn alt tiny" onclick="toggleMilestone('${E(m.id)}')">${m.completedAt?'다시 열기':'완료 처리'}</button><button class="btn alt tiny" onclick="openMilestoneForm('${E(p.id)}','${E(m.id)}')">수정</button><button class="btn alt tiny" onclick="deleteMilestone('${E(m.id)}')">삭제</button></div></article>`}).join('');return `<section class="panel" style="margin-bottom:18px"><div class="row wrap"><div><h2 style="margin:0">${E(p.name)} · 마일스톤</h2><p class="muted small" style="margin:6px 0">중간 목표 ${items.length}개 · 완료 ${items.filter(m=>m.completedAt).length}개 · 진행률 ${actual}%</p></div><button class="btn" onclick="openMilestoneForm('${E(p.id)}')">+ 목표 추가</button></div>${rows||'<div class="empty">아직 중간 목표가 없어요. 목표와 점검일을 등록해 주세요.</div>'}<p class="muted small">마일스톤 완료는 별도 기록이며 직원 진행률을 자동 변경하지 않습니다.</p></section>`}
+function openMilestoneForm(pid,id=''){const p=data.projects.find(p=>p.id===pid);if(!p)return;const m=milestoneItems(pid).find(x=>x.id===id)||{title:'',due:'',target:25,note:''};openModal(`<h2>${id?'중간 목표 수정':'중간 목표 추가'}</h2><p class="muted small">${E(p.name)} 프로젝트 전용 목표입니다.</p><form onsubmit="saveMilestone(event,'${E(pid)}','${E(id)}')"><label class="fieldlabel">목표 이름</label><input name="title" class="field" value="${E(m.title)}" maxlength="100" required placeholder="예: 화면 설계 완료"><label class="fieldlabel">점검 예정일</label><input name="due" class="field" type="date" value="${E(m.due)}" required><label class="fieldlabel">목표 진행률 (%)</label><input name="target" class="field" type="number" min="0" max="100" required value="${Number(m.target)||0}"><label class="fieldlabel">점검 메모</label><textarea name="note" class="field" rows="3" placeholder="점검 기준이나 필요한 결과물">${E(m.note)}</textarea><div class="row wrap" style="margin-top:18px"><button type="button" class="btn alt" onclick="closeModal()">취소</button><button class="btn" type="submit">저장</button></div></form>`)}
+function saveMilestone(e,pid,id){e.preventDefault();if(!data.projects.some(p=>p.id===pid))return;const f=new FormData(e.target);data.projectMilestones??=[];let m=data.projectMilestones.find(x=>x.id===id&&x.projectId===pid);if(!m){m={id:uid(),projectId:pid,createdAt:stamp(),completedAt:null};data.projectMilestones.push(m)}m.title=String(f.get('title')).trim();m.due=String(f.get('due'));m.target=Math.max(0,Math.min(100,Number(f.get('target'))||0));m.note=String(f.get('note')||'').trim();m.updatedAt=stamp();closeModal();saveChange('프로젝트 중간 목표를 저장했어요')}
+function toggleMilestone(id){const m=(data.projectMilestones||[]).find(x=>x.id===id);if(!m)return;m.completedAt=m.completedAt?null:stamp();saveChange(m.completedAt?'중간 목표를 완료 처리했어요':'중간 목표를 다시 열었어요')}
+function deleteMilestone(id){if(!confirm('이 중간 목표를 삭제할까요?'))return;data.projectMilestones=(data.projectMilestones||[]).filter(x=>x.id!==id);saveChange('중간 목표를 삭제했어요')}
+function progressPage(){
+ const base=baseProgressPage();
+ if(analysisProjectId){const p=data.projects.find(x=>x.id===analysisProjectId);return (p?projectStageTimeline(p)+milestonePanel(p)+opsCard(p):'')+base}
+ return recommendationCenter()+operationCenter()+`<div class="row wrap" style="margin-bottom:12px"><div><h2 style="margin:0">운영 분석 · 일정 및 인력</h2><p class="muted small">진행률 기록을 바탕으로 전체 프로젝트의 일정과 업무 부담을 점검합니다.</p></div></div>${data.projects.map(p=>projectStageTimeline(p)+milestonePanel(p)+opsCard(p)).join('')||'<div class="empty">프로젝트를 생성하면 분석을 볼 수 있습니다.</div>'}`+base;
+}
 
 load();render();
 </script></body></html>
