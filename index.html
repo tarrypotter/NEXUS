@@ -168,6 +168,16 @@ html,body{min-height:100%;height:auto!important;overflow-x:hidden;overflow-y:aut
 .nx27-event p{font-size:13px;white-space:pre-wrap;margin:7px 0 0;overflow-wrap:anywhere}
 @media(max-width:700px){.nx27-steps{scrollbar-width:none}.nx27-actions button{min-width:100%}.nx27-flow-status{flex-wrap:wrap}}
 </style>
+<style>
+/* v2.8 Team inbox */
+.nx28-switcher{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:16px;margin:0 0 18px;box-shadow:var(--shadow)}
+.nx28-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px}.nx28-top strong{font-size:15px}.nx28-top small{font-size:12px;color:var(--muted)}
+.nx28-top select{width:min(240px,100%)}.nx28-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.nx28-tabs button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;font-weight:750;font-size:12px;min-width:0}
+.nx28-tabs button.active{background:var(--accent);color:#fff;border-color:var(--accent)}.nx28-tabs b{margin-left:5px;border-radius:12px;background:rgba(127,127,127,.15);padding:2px 6px}
+.nx28-info{background:var(--panel2);border-radius:11px;padding:11px 14px;color:var(--muted);font-size:12px;line-height:1.7;margin-top:12px}
+@media(max-width:600px){.nx28-switcher{padding:13px}.nx28-top{align-items:stretch}.nx28-top select{width:100%}.nx28-tabs{gap:5px}.nx28-tabs button{font-size:11px;padding:11px 3px}.nx28-tabs b{display:inline-block;margin-left:2px}}
+</style>
 </head>
 <body data-theme="light"><div class="shell">
 <aside class="sidebar"><div class="brand"><div class="logo">✦</div>NEXUS <span style="font-size:9px;color:var(--muted);letter-spacing:0">WORKSPACE</span></div><div class="side-label">WORKSPACE</div><nav id="sidebarNav"></nav><div class="side-bottom"><button class="nav-itemx" onclick="navigate('settings')"><span class="nav-icon">⚙</span> 설정 및 데이터</button><div class="profile"><div class="avatar">NX</div><div><div style="font-size:12px;font-weight:800">NEXUS Admin</div><div class="tiny muted">Workspace Owner · Local</div></div></div></div></aside>
@@ -388,6 +398,30 @@ render=function(){nx27Render();
  }
  if(page==='settings'){const main=document.getElementById('main');const release=main?.querySelector('.nx26-release');if(release&&!release.querySelector('[data-nx27-release]')){const d=document.createElement('div');d.setAttribute('data-nx27-release','');d.style.cssText='padding:12px 0;border-top:1px solid var(--line, #ddd);font-size:13px';d.innerHTML='<b>v2.7 · 업무 요청·승인 프로세스</b><p class="muted" style="margin:6px 0">담당자 선택, 업무 수락, 진행 보고, 검토 요청, 승인·반려 이력 및 개요의 승인 대기 목록 추가</p>';release.prepend(d)}}
 };
+
+
+/* NEXUS v2.8: role-aware task inbox (local member selector, not authentication). */
+const NX28_PERSON_KEY='nexus_workspace_member_v28';
+let nx28Tab='team',nx28Person='all';
+try{const stored=localStorage.getItem(NX28_PERSON_KEY);if(stored)nx28Person=stored}catch(e){}
+function nx28MemberTasks(){return data.tasks.filter(t=>t.assigneeId===nx28Person)}
+function nx28ReviewTasks(){return data.tasks.filter(t=>{
+ const phase=t.workflow&&t.workflow.phase;
+ return phase==='submitted'||(!phase&&t.status==='review');
+})}
+function nx28SelectPerson(id){nx28Person=id;try{localStorage.setItem(NX28_PERSON_KEY,id)}catch(e){};renderBoard();nx28UpdateBar()}
+function nx28Switch(tab){if(!['mine','team','review'].includes(tab))return;nx28Tab=tab;renderBoard();nx28UpdateBar()}
+const nx28BaseFiltered=filteredTasks;
+filteredTasks=function(){let all=nx28BaseFiltered();if(page!=='tasks')return all;if(nx28Tab==='mine')return all.filter(t=>nx28Person!=='all'&&t.assigneeId===nx28Person);if(nx28Tab==='review')return all.filter(t=>{const phase=t.workflow&&t.workflow.phase;return phase==='submitted'||(!phase&&t.status==='review')});return all};
+function nx28Bar(){const myCount=nx28Person==='all'?0:nx28MemberTasks().length;const items=[['mine','내 업무',myCount],['team','팀 업무',data.tasks.length],['review','승인 대기',nx28ReviewTasks().length]];
+ return `<section class="nx28-switcher"><div class="nx28-top"><div><strong>업무 워크스페이스</strong><div><small>담당자별 업무와 검토 요청을 빠르게 확인하세요.</small></div></div><select class="field" aria-label="현재 담당자 선택" onchange="nx28SelectPerson(this.value)"><option value="all" ${nx28Person==='all'?'selected':''}>담당자 선택 · 전체 보기</option>${data.members.map(m=>`<option value="${esc(m.id)}" ${nx28Person===m.id?'selected':''}>${esc(m.name)} · ${esc(m.role||'팀원')}</option>`).join('')}</select></div><div class="nx28-tabs">${items.map(([id,title,count])=>`<button type="button" class="${nx28Tab===id?'active':''}" onclick="nx28Switch('${id}')" aria-pressed="${nx28Tab===id}">${title}<b>${count}</b></button>`).join('')}</div><div class="nx28-info">${nx28Tab==='mine'?(nx28Person==='all'?'내 업무를 보려면 위에서 담당자를 선택하세요.':`선택한 담당자에게 배정된 업무만 표시합니다. · ${esc(findName(data.members,nx28Person))}`):nx28Tab==='review'?'검토 요청 단계의 업무를 모아 보여줍니다. 업무를 눌러 요청·승인 탭에서 검토할 수 있습니다.':'팀 전체의 업무를 보여줍니다. 프로젝트·상태·담당자 필터를 함께 이용할 수 있습니다.'}<br>※ 로컬 모드에서는 담당자를 직접 선택합니다. 실제 로그인·접근 권한은 적용되지 않습니다.</div></section>`}
+function nx28UpdateBar(){if(page!=='tasks')return;const main=document.getElementById('main');if(!main)return;const old=main.querySelector('.nx28-switcher');if(old)old.remove();const heading=main.querySelector('.headrow');if(heading)heading.insertAdjacentHTML('afterend',nx28Bar());else main.insertAdjacentHTML('afterbegin',nx28Bar())}
+const nx28PrevRender=render;
+render=function(){nx28PrevRender();const version=document.querySelector('.brand-copy strong');if(version)version.textContent='2.8';nx28UpdateBar();if(page==='settings'){const release=document.querySelector('.nx26-release');if(release&&!release.querySelector('.nx28-release'))release.insertAdjacentHTML('afterbegin','<div class="nx28-release" style="padding:10px 0;border-bottom:1px solid var(--line)"><b>v2.8 · 내 업무 / 팀 업무 / 승인 대기</b><p class="muted" style="font-size:12px;margin:5px 0">담당자 선택, 업무별 전환, 검토 요청 모아보기. 로컬 데이터 호환 유지.</p></div>')}};
+const nx28PrevBoard=renderBoard;
+renderBoard=function(){nx28PrevBoard();nx28UpdateBar()};
+const nx28PrevHistory=nx26History;
+nx26History=function(){nx28PrevHistory();const list=document.querySelector('.nx26-history');if(list&&!list.querySelector('.nx28-history-item'))list.insertAdjacentHTML('afterbegin','<article class="nx28-history-item"><b>v2.8</b><p>담당자별 내 업무, 팀 업무, 승인 대기 화면과 로컬 담당자 전환 기능</p></article>')};
 
 load();render();
 
