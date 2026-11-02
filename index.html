@@ -19,11 +19,90 @@
 .v21-boardhint{color:var(--muted);font-size:11px;margin:5px 0 13px}
 @media(max-width:700px){.v21-workspace{max-width:none;width:100%}.v21-projectfocus{align-items:flex-start;flex-direction:column}.v21-projectfocus button{width:100%}.v21-status{display:flex}.board{grid-template-columns:repeat(4,minmax(245px,80vw));scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}.column{scroll-snap-align:start}.task{touch-action:pan-y}.main{padding-bottom:calc(112px + env(safe-area-inset-bottom))}}
 @media(min-width:701px){.v21-status{opacity:.9}}
+
+/* NEXUS 2.2 — native-feeling mobile visual refresh, no storage schema changes */
+.mobile-topbrand{display:none}
+@media(max-width:720px){
+ :root{--shadow:0 8px 28px rgba(18,31,67,.045)}
+ html{overflow-x:hidden;-webkit-text-size-adjust:100%;scroll-padding-top:85px}
+ body{overflow-x:hidden;min-width:320px;-webkit-font-smoothing:antialiased}
+ .shell,.content{min-width:0}
+ .topbar{height:calc(64px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 15px 0;gap:7px;box-shadow:0 4px 20px rgba(15,23,42,.025);border-bottom:1px solid var(--line)}
+ .topbar>div:first-child{gap:8px!important;min-width:0}
+ .mobile-topbrand{display:flex;align-items:center;gap:9px;font-weight:900;letter-spacing:-.7px;font-size:15px;line-height:1}
+ .mobile-topbrand-mark{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,#9994ff,#5d52e9);color:white;font-size:16px;box-shadow:0 4px 11px #6057e933}
+ .mobile-topbrand small{display:block;font-size:8px;letter-spacing:1.7px;color:var(--muted);margin-top:4px}
+ .topbar .crumb{display:none}
+ .mobile-back{width:34px;min-width:34px;height:36px;flex-shrink:0;border:0;background:transparent;font-size:28px}
+ .top-actions{gap:6px}
+ .iconbtn{height:38px;min-width:38px;border-radius:12px;font-size:19px}
+ .top-actions .iconbtn{border-color:transparent;background:var(--panel2)}
+ .top-actions #themeButton{display:none}
+ .notice-btn{position:relative}
+ .main{padding:21px 16px calc(124px + env(safe-area-inset-bottom));width:100%;overflow:clip}
+ .headrow{gap:14px;margin-bottom:18px;flex-wrap:wrap}
+ .headrow>div:first-child{min-width:0;flex:1 1 200px}
+ .headrow>.btn-primaryx,.headrow>.btn-soft{flex-shrink:0}
+ .page-title{font-size:25px;line-height:1.24;letter-spacing:-1.2px}
+ .sub{font-size:12px;line-height:1.65;max-width:35em}
+ .v2-welcome{padding:23px 19px;border-radius:21px;margin-bottom:18px;box-shadow:0 10px 30px #5141bd12}
+ .v2-welcome h1{font-size:23px!important;line-height:1.4;letter-spacing:-.7px}
+ .v2-welcome p{font-size:12px;margin-top:9px}
+ .hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+ .hero-actions button{font-size:12px;min-height:44px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:16px}
+ .stat{border-radius:17px;padding:16px 14px;box-shadow:none}
+ .stat-top{gap:5px;font-size:11px}
+ .stat-symbol{width:32px;height:32px;flex-shrink:0}
+ .stat-number{font-size:27px;line-height:1.2;margin-top:10px}
+ .stat-foot{font-size:10px;line-height:1.5}
+ .dashboard-grid,.team-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+ .panel{border-radius:18px;padding:17px 16px;box-shadow:none}
+ .panel-title{margin-bottom:12px}.panel-title h3{font-size:14px}
+ .project-row{padding:14px 0}.project-name{font-size:13px}
+ .toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px;align-items:stretch}
+ .toolbar .search{width:100%;grid-column:1/-1;min-height:43px}
+ .toolbar>*{min-width:0!important;max-width:100%;width:100%;font-size:12px;min-height:43px}
+ .v21-workspace{min-height:47px;margin-bottom:16px;max-width:100%;border-radius:14px;box-shadow:none}
+ .v21-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.v21-shortcuts button{min-width:0;white-space:normal;min-height:44px}
+ .board{display:grid;grid-template-columns:repeat(4,minmax(270px,calc(100vw - 42px)));gap:11px;margin:0 -16px;padding:0 16px 15px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-padding-inline:16px;scrollbar-width:none}
+ .board::-webkit-scrollbar,.mobile-nav::-webkit-scrollbar{display:none}
+ .column{border-radius:17px;padding:13px;scroll-snap-align:start;min-height:180px}
+ .task{padding:14px;border-radius:13px;margin-bottom:10px;min-height:105px}
+ .task-title{font-size:13px}.task-info{gap:8px;flex-wrap:wrap}
+ .tablex{font-size:11px}.tablex td,.tablex th{padding:12px 7px}
+ .calendar-grid{gap:3px}.day{min-height:60px;padding:5px 3px;border-radius:7px;overflow:hidden}.event{font-size:8px}
+ .member{padding:15px;border-radius:15px}
+ .settings-row{flex-wrap:wrap;padding:17px 0;gap:10px}.settings-row>div{min-width:0}
+ .mobile-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;left:0;right:0;bottom:0;padding:7px 7px calc(7px + env(safe-area-inset-bottom));min-height:calc(64px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line);box-shadow:0 -8px 28px rgba(15,23,42,.06);overflow:visible;z-index:45}
+ .mobile-nav button{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;min-width:0;min-height:48px;line-height:1.2;font-size:10px;font-weight:700;white-space:nowrap;padding:4px 0;border-radius:11px}
+ .mobile-nav button span{font-size:21px;line-height:24px}
+ .mobile-nav button.active{color:var(--accent);background:var(--soft)}
+ .mobile-nav button:nth-child(5):not(#moreNav){display:none}
+ #moreNav{display:flex}
+ .modalx{padding:0;align-items:flex-end;z-index:70;background:rgba(8,15,30,.58);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+ .dialog{position:relative;width:100%;max-width:none;max-height:calc(94dvh - env(safe-area-inset-top));margin:0;overscroll-behavior:contain;background:var(--panel);border:0;border-radius:24px 24px 0 0;padding:30px 19px calc(23px + env(safe-area-inset-bottom));box-shadow:0 -14px 42px #0002;animation:nexusSheet .22s ease-out}
+ .dialog:before{content:'';position:absolute;top:10px;left:calc(50% - 20px);width:40px;height:4px;border-radius:5px;background:var(--line)}
+ @keyframes nexusSheet{from{transform:translateY(28px);opacity:.85}to{transform:translateY(0);opacity:1}}
+ .dialog h2{font-size:19px}
+ .formlabel{font-size:12px;margin:14px 0 7px}
+ input.field,textarea.field,select.field,input.search{font-size:16px;min-height:44px}
+ .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .dialog-bottom{position:sticky;bottom:calc(-23px - env(safe-area-inset-bottom));background:var(--panel);padding:12px 0 calc(7px + env(safe-area-inset-bottom));margin-top:17px;z-index:2;flex-wrap:wrap}
+ .dialog-bottom button{min-height:44px}
+ .btn-primaryx,.btn-soft{min-height:42px;border-radius:12px}
+ .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .quick-link{min-height:78px;border-radius:14px}
+ .toastx{bottom:calc(78px + env(safe-area-inset-bottom));max-width:calc(100vw - 30px);white-space:normal;text-align:center}
+ .v2-hint{font-size:11px;line-height:1.6}
+}
+@media(max-width:365px){.main{padding-left:12px;padding-right:12px}.stat{padding:13px 11px}.mobile-topbrand{font-size:13px}.mobile-topbrand-mark{width:27px;height:27px}.topbar{padding-left:9px;padding-right:9px}.top-actions{gap:0}.top-actions .iconbtn{min-width:34px;height:35px}.board{margin-left:-12px;margin-right:-12px;padding-left:12px;padding-right:12px}.form-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body data-theme="light"><div class="shell">
 <aside class="sidebar"><div class="brand"><div class="logo">✦</div>NEXUS <span style="font-size:9px;color:var(--muted);letter-spacing:0">WORKSPACE</span></div><div class="side-label">WORKSPACE</div><nav id="sidebarNav"></nav><div class="side-bottom"><button class="nav-itemx" onclick="navigate('settings')"><span class="nav-icon">⚙</span> 설정 및 데이터</button><div class="profile"><div class="avatar">NX</div><div><div style="font-size:12px;font-weight:800">NEXUS Admin</div><div class="tiny muted">Workspace Owner · Local</div></div></div></div></aside>
-<div class="content"><header class="topbar"><div style="display:flex;align-items:center;gap:9px"><button class="iconbtn mobile-back" id="backBtn" onclick="goBack()" aria-label="뒤로가기">‹</button><div class="crumb">Workspace <span style="margin:0 7px">/</span> <b id="crumb">개요</b></div></div><div class="top-actions"><span class="tiny muted top-hide" id="todayLabel"></span><button class="iconbtn" aria-label="검색" onclick="openSearch()">⌕</button><button class="iconbtn" id="themeButton" onclick="toggleTheme()" aria-label="테마 전환">☾</button><button class="iconbtn" aria-label="새 업무" onclick="openTask()">＋</button></div></header><main id="main" class="main"></main></div>
+<div class="content"><header class="topbar"><div style="display:flex;align-items:center;gap:9px"><button class="iconbtn mobile-back" id="backBtn" onclick="goBack()" aria-label="뒤로가기">‹</button><div class="mobile-topbrand"><span class="mobile-topbrand-mark">✦</span><span>NEXUS<small>WORKSPACE</small></span></div><div class="crumb">Workspace <span style="margin:0 7px">/</span> <b id="crumb">개요</b></div></div><div class="top-actions"><span class="tiny muted top-hide" id="todayLabel"></span><button class="iconbtn" aria-label="검색" onclick="openSearch()">⌕</button><button class="iconbtn" id="themeButton" onclick="toggleTheme()" aria-label="테마 전환">☾</button><button class="iconbtn" aria-label="새 업무" onclick="openTask()">＋</button></div></header><main id="main" class="main"></main></div>
 </div><nav class="mobile-nav" id="mobileNav" aria-label="하단 메뉴"></nav><div class="modalx" id="modal" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal()"><div id="dialog" class="dialog"></div></div><div class="toastx" id="toast" role="status"></div><input id="importFile" type="file" accept=".json,application/json" hidden onchange="importJSON(event)">
 <script>
 'use strict';
@@ -36,7 +115,7 @@ const oldLoad=load;load=function(){oldLoad();data.notifications=Array.isArray(da
 const oldLog=log;log=function(action){oldLog(action);data.notifications=Array.isArray(data.notifications)?data.notifications:[];data.notifications.unshift({id:uid(),message:action,at:now(),read:false});data.notifications=data.notifications.slice(0,150)};
 const oldImport=importJSON;importJSON=function(e){const file=e.target.files?.[0];e.target.value='';if(!file)return;const reader=new FileReader();reader.onload=()=>{try{let d=JSON.parse(reader.result);if(!d||!Array.isArray(d.projects)||!Array.isArray(d.tasks)||!Array.isArray(d.members))throw Error('지원하지 않는 JSON 구조');if(d.projects.some(p=>!p.id||!p.name)||d.tasks.some(t=>!t.id||!t.title)||d.members.some(m=>!m.id||!m.name))throw Error('필수 데이터가 누락되었습니다');if(!confirm('기존 데이터를 백업 파일 내용으로 교체할까요?'))return;data={...d,version:2,theme:d.theme==='dark'?'dark':'light',activities:Array.isArray(d.activities)?d.activities:[],notifications:Array.isArray(d.notifications)?d.notifications:[]};data.tasks.forEach(t=>{t.checklist=Array.isArray(t.checklist)?t.checklist:[];t.comments=Array.isArray(t.comments)?t.comments:[]});data.projects.forEach(p=>p.milestones=Array.isArray(p.milestones)?p.milestones:[]);save();navigate('dashboard');toast('JSON 백업 복원 완료')}catch(err){toast('복원 실패: '+err.message)}};reader.readAsText(file)};
 const oldRender=render;render=function(){if(page==='activity'){let actual=page;page='dashboard';oldRender();page=actual}else oldRender();enhanceUI()};
-function enhanceUI(){let side=document.querySelector('.brand');if(side)side.innerHTML='<div class="logo">✦</div><div class="brand-copy">NEXUS <span>WORKSPACE <strong>2.0</strong></span></div>';let top=document.querySelector('.top-actions');if(top&&!document.getElementById('noticeBtn')){let b=document.createElement('button');b.id='noticeBtn';b.className='iconbtn notice-btn';b.setAttribute('aria-label','알림센터');b.onclick=openNotifications;b.innerHTML='♧<i id="noticeDot"></i>';top.prepend(b)}let dot=document.getElementById('noticeDot');if(dot)dot.hidden=!data.notifications?.some(n=>!n.read);let nav=document.getElementById('sidebarNav');if(nav){let extra=document.createElement('button');extra.className='nav-itemx '+(page==='activity'?'active':'');extra.innerHTML='<span class="nav-icon">◷</span> 활동 로그';extra.onclick=()=>openActivityPage();nav.append(extra)}if(page==='dashboard'){let main=document.getElementById('main');main.insertAdjacentHTML('afterbegin',`<div class="v2-welcome"><div><div class="eyebrow">WORKSPACE OVERVIEW <span class="live-mark">● LOCAL</span></div><h1>안녕하세요, 오늘도 좋은 성과를 만들어봐요.</h1><p>프로젝트와 팀의 업무를 한눈에 관리하는 NEXUS 2.0</p></div><div class="hero-actions"><button class="btn-soft" onclick="openActivityPage()">◷ 활동 기록</button><button class="btn-primaryx" onclick="openTask()">＋ 새 업무</button></div></div>`)}if(page==='tasks'){let a=document.getElementById('taskArea');if(a&&!document.getElementById('v2TaskHelp'))a.insertAdjacentHTML('afterbegin','<div id="v2TaskHelp" class="v2-hint">업무 카드를 선택하면 체크리스트·댓글·변경 이력을 관리할 수 있습니다. 모바일에서는 카드를 눌러 상태를 변경하세요.</div>')}if(page==='projects'){document.querySelectorAll('.project-row').forEach(el=>{const onclick=el.getAttribute('onclick')||'';const match=onclick.match(/openProject\('([^']+)'\)/);if(match){el.setAttribute('onclick',`openProjectDetails('${match[1]}')`);el.style.cursor='pointer'}})}if(page==='activity'){document.getElementById('crumb').textContent='활동 로그';document.getElementById('main').innerHTML=activityPage()}let navMobile=document.getElementById('mobileNav');if(navMobile&&!document.getElementById('moreNav')){const b=document.createElement('button');b.id='moreNav';b.innerHTML='<span>☷</span>더보기';b.onclick=openMoreMenu;navMobile.append(b)}}
+function enhanceUI(){let side=document.querySelector('.brand');if(side)side.innerHTML='<div class="logo">✦</div><div class="brand-copy">NEXUS <span>WORKSPACE <strong>2.2</strong></span></div>';let top=document.querySelector('.top-actions');if(top&&!document.getElementById('noticeBtn')){let b=document.createElement('button');b.id='noticeBtn';b.className='iconbtn notice-btn';b.setAttribute('aria-label','알림센터');b.onclick=openNotifications;b.innerHTML='♧<i id="noticeDot"></i>';top.prepend(b)}let dot=document.getElementById('noticeDot');if(dot)dot.hidden=!data.notifications?.some(n=>!n.read);let nav=document.getElementById('sidebarNav');if(nav){let extra=document.createElement('button');extra.className='nav-itemx '+(page==='activity'?'active':'');extra.innerHTML='<span class="nav-icon">◷</span> 활동 로그';extra.onclick=()=>openActivityPage();nav.append(extra)}if(page==='dashboard'){let main=document.getElementById('main');main.insertAdjacentHTML('afterbegin',`<div class="v2-welcome"><div><div class="eyebrow">WORKSPACE OVERVIEW <span class="live-mark">● LOCAL</span></div><h1>안녕하세요, 오늘도 좋은 성과를 만들어봐요.</h1><p>프로젝트와 팀의 업무를 한눈에 관리하는 NEXUS 2.0</p></div><div class="hero-actions"><button class="btn-soft" onclick="openActivityPage()">◷ 활동 기록</button><button class="btn-primaryx" onclick="openTask()">＋ 새 업무</button></div></div>`)}if(page==='tasks'){let a=document.getElementById('taskArea');if(a&&!document.getElementById('v2TaskHelp'))a.insertAdjacentHTML('afterbegin','<div id="v2TaskHelp" class="v2-hint">업무 카드를 선택하면 체크리스트·댓글·변경 이력을 관리할 수 있습니다. 모바일에서는 카드를 눌러 상태를 변경하세요.</div>')}if(page==='projects'){document.querySelectorAll('.project-row').forEach(el=>{const onclick=el.getAttribute('onclick')||'';const match=onclick.match(/openProject\('([^']+)'\)/);if(match){el.setAttribute('onclick',`openProjectDetails('${match[1]}')`);el.style.cursor='pointer'}})}if(page==='activity'){document.getElementById('crumb').textContent='활동 로그';document.getElementById('main').innerHTML=activityPage()}let navMobile=document.getElementById('mobileNav');if(navMobile&&!document.getElementById('moreNav')){const b=document.createElement('button');b.id='moreNav';b.innerHTML='<span>☷</span>더보기';b.onclick=openMoreMenu;navMobile.append(b)}}
 function openMoreMenu(){modal(`<div class="v2-modal-head"><div><div class="eyebrow">EXPLORE</div><h2>전체 메뉴</h2></div><button class="iconbtn" onclick="closeModal()">×</button></div><div class="quick-grid">${[['dashboard','대시보드','▦'],['tasks','업무','☷'],['projects','프로젝트','▣'],['calendar','캘린더','▦'],['team','팀 관리','♙'],['analytics','분석','◫'],['activity','활동 로그','◷'],['settings','설정','⚙']].map(([id,name,ic])=>`<button class="quick-link" onclick="closeModal();${id==='activity'?'openActivityPage()':`navigate('${id}')`}"><b>${ic}</b><span>${name}</span></button>`).join('')}</div>`)}
 function openActivityPage(){historyStack.push(page);page='activity';render();window.scrollTo({top:0,behavior:'instant'})}
 function activityPage(){let entries=data.activities||[];return `<div class="headrow"><div><div class="eyebrow">AUDIT TRAIL</div><h1 class="page-title">활동 로그</h1><p class="sub">업무와 프로젝트의 주요 변경 내역을 확인하세요.</p></div><button class="btn-soft" onclick="exportActivityCSV()">CSV 내보내기</button></div><section class="panel v2-log-panel">${entries.length?entries.map(a=>`<div class="timeline-row"><span class="timeline-dot"></span><div><strong>${esc(a.action||'활동')}</strong><small>${formatWhen(a.at)}</small></div></div>`).join(''):'<div class="empty">아직 기록된 활동이 없습니다.</div>'}</section>`}
@@ -64,7 +143,7 @@ const oldNavigate=navigate;navigate=function(p){if(page==='activity'){historySta
 // NEXUS v2.1: preserve legacy nexus_workspace_v1 schema and key.
 let v21Workspace='all';
 function v21SelectWorkspace(id){v21Workspace=id;filterProject=id;filterStatus='all';filterSearch='';if(page!=='tasks'){navigate('tasks')}else{render()}toast(id==='all'?'전체 업무 공간':'프로젝트 작업 공간으로 이동')}
-function v21WorkspaceToolbar(){return `<div class="v21-workspace"><span>◈ 워크스페이스</span><select aria-label="워크스페이스 선택" onchange="v21SelectWorkspace(this.value)"><option value="all">전체 프로젝트</option>${data.projects.map(p=>`<option value="${esc(p.id)}" ${filterProject===p.id?'selected':''}>${esc(p.name)}</option>`).join('')}</select><span class="v21-badge">2.1</span></div>`}
+function v21WorkspaceToolbar(){return `<div class="v21-workspace"><span>◈ 워크스페이스</span><select aria-label="워크스페이스 선택" onchange="v21SelectWorkspace(this.value)"><option value="all">전체 프로젝트</option>${data.projects.map(p=>`<option value="${esc(p.id)}" ${filterProject===p.id?'selected':''}>${esc(p.name)}</option>`).join('')}</select><span class="v21-badge">2.2</span></div>`}
 function v21ChangeStatus(e,id){e.stopPropagation();const t=data.tasks.find(t=>t.id===id);if(!t||!statuses.some(x=>x[0]===e.target.value))return;if(t.status===e.target.value)return;t.status=e.target.value;t.updatedAt=now();commit('업무 상태 변경: '+t.title+' → '+label(statuses,t.status))}
 const v21BoardMarkup=boardMarkup;
 boardMarkup=function(){let html=v21BoardMarkup();return html.replace(/(<article class="task"[^>]*>)([\s\S]*?)(<\/article>)/g,(full,start,body,end)=>{let id=start.match(/openTask\('([^']+)'\)/)?.[1];let task=data.tasks.find(t=>t.id===id);if(!task)return full;return start+body+`<div class="v21-status"><select aria-label="${esc(task.title)} 상태 변경" onclick="event.stopPropagation()" onchange="v21ChangeStatus(event,'${id}')">${selectOpts(statuses,task.status)}</select></div>`+end})};
